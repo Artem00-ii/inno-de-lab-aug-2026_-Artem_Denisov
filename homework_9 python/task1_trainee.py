@@ -6,83 +6,64 @@ class Trainee:
         score: int = 0,
         passing_grade: int = 10
     ) -> None:
-        self.name: str = name
-        self.surname: str = surname
-        self.passing_grade: int = passing_grade
-        self.__score: int = score
+        self.name = name
+        self.surname = surname
+        self.passing_grade = passing_grade
+        self.__score = 0
+        self.score = score
 
     @property
     def score(self) -> int:
-        """Returns current trainee score."""
         return self.__score
 
     @score.setter
     def score(self, value: int) -> None:
-        """Validates and updates trainee score."""
-        if not isinstance(value, int):
+        if type(value) is not int:
             raise ValueError(
                 f"Expected value of type int, got {type(value)}"
             )
 
         if value < 0:
-            raise ValueError(
-                "The score shouldn't be less than 0!"
-            )
+            raise ValueError("The score shouldn't be less than 0!")
 
         self.__score = value
 
     def do_homework(self) -> None:
-        """Increases score by 1."""
         self.score += 1
 
     def miss_homework(self) -> None:
-        """Decreases score by 1."""
         self.score -= 1
 
     def visit_lecture(self) -> None:
-        """Increases score by 1."""
         self.score += 1
 
     def miss_lecture(self) -> None:
-        """Decreases score by 1."""
         self.score -= 1
 
+    @property
     def is_passing(self) -> bool:
-        """Checks whether trainee passed the course."""
         return self.score >= self.passing_grade
 
 
-# Проверка работы класса.
+# Проверка работы класса
+trainee = Trainee("Иван", "Иванов")
 
-print("=== ПРОВЕРКА УСПЕВАЕМОСТИ СТАЖЕРА ===")
+print(f"Студент: {trainee.name} {trainee.surname}")
+print(f"Начальный балл: {trainee.score}")
+print(f"Проходной балл: {trainee.passing_grade}")
+print(f"Сдал: {trainee.is_passing}")
 
-# Создаем стажера с начальным баллом 9
-# и проходным баллом 10.
-trainee = Trainee(
-    name="Иван",
-    surname="Иванов",
-    score=9,
-    passing_grade=10
-)
-
-# Выполняем домашнее задание.
 trainee.do_homework()
+print(f"После выполнения домашнего задания: {trainee.score}")
 
-print(
-    f"Баллы: {trainee.score}, "
-    f"Прошел курс: {trainee.is_passing()}"
-)
+trainee.visit_lecture()
+print(f"После посещения лекции: {trainee.score}")
 
-# Пропускаем лекцию.
+trainee.miss_homework()
+print(f"После пропуска домашнего задания: {trainee.score}")
+
 trainee.miss_lecture()
+print(f"После пропуска лекции: {trainee.score}")
 
-print(
-    f"Баллы: {trainee.score}, "
-    f"Прошел курс: {trainee.is_passing()}"
-)
-
-# Проверяем валидацию отрицательного значения.
-try:
-    trainee.score = -5
-except ValueError as error:
-    print(f"Ошибка: {error}")
+print(f"Итоговый балл: {trainee.score}")
+print(f"Сдал: {trainee.is_passing}")
