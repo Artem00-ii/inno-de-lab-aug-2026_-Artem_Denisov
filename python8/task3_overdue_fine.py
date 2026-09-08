@@ -27,20 +27,22 @@ def calculate_overdue_fine(
         ZeroDivisionError: если количество дней просрочки равно нулю.
     """
     try:
-        # Преобразуем количество дней просрочки в число.
         numeric_days = float(days_overdue)
 
-        # Рассчитываем общий штраф.
         total_fine = numeric_days * fine_rate
 
-        # Рассчитываем технический индекс оборачиваемости.
         return_index = DEFAULT_RETURN_INDEX_BASE / numeric_days
 
-        # Возвращаем рассчитанные значения.
+        # Выводим успешный результат до выполнения finally.
+        print(
+            f"Фильм: '{film_title}' | "
+            f"Итоговый штраф: {round(total_fine, 2)}$ | "
+            f"Индекс: {round(return_index, 2)}"
+        )
+
         return round(total_fine, 2), round(return_index, 2)
 
     except TypeError as error:
-        # Обрабатываем ситуацию с неправильным типом данных.
         print(
             f"[ОШИБКА ТИПА] Некорректный тип данных "
             f"для '{film_title}': {error}"
@@ -48,8 +50,6 @@ def calculate_overdue_fine(
         return None
 
     except ValueError as error:
-        # Обрабатываем ситуацию, когда строку нельзя
-        # преобразовать в число.
         print(
             f"[ОШИБКА ЗНАЧЕНИЯ] Невозможно преобразовать "
             f"дни в число для '{film_title}': {error}"
@@ -57,7 +57,6 @@ def calculate_overdue_fine(
         return None
 
     except ZeroDivisionError as error:
-        # Обрабатываем отсутствие дней просрочки.
         print(
             f"[ОШИБКА ДЕЛЕНИЯ НА НОЛЬ] Возврат без "
             f"просрочки для '{film_title}': {error}"
@@ -65,8 +64,6 @@ def calculate_overdue_fine(
         return None
 
     finally:
-        # Этот блок выполняется всегда — независимо от того,
-        # произошла ошибка или расчёт завершился успешно.
         print("--- Проверка транзакции возврата завершена ---")
 
 
@@ -74,15 +71,7 @@ print("=== ПРОВЕРКА ВОЗВРАТОВ ===")
 
 
 # Успешный расчёт.
-result = calculate_overdue_fine("Matrix", 5, 1.5)
-
-if result is not None:
-    total_fine, return_index = result
-    print(
-        f"Фильм: 'Matrix' | "
-        f"Итоговый штраф: {total_fine}$ | "
-        f"Индекс: {return_index}"
-    )
+calculate_overdue_fine("Matrix", 5, 1.5)
 
 
 # Ошибка ValueError.
